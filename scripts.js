@@ -1,5 +1,10 @@
-
+//getting all the forms=================================================================
 const addUser=document.forms["add user"];
+const addFood=document.forms["add food"]
+const inTake=document.forms["intake"];
+const stt=document.forms["stats"];
+
+//auto calculating requirements==========================================================
 var ht=addUser.querySelector('input[name="height"]');
 
 ht.addEventListener("keyup",function(e){
@@ -48,124 +53,344 @@ addUser.querySelector('output[name="h2o"]').value=2;
 });
 
 
-
-//add user---
-
-addUser.addEventListener('submit',function(e){
-          e.preventDefault();
-          
-          var ele=addUser.querySelectorAll('input,output');
-          listUser(ele);
-
-});
+//adding user=========================================================================
 
 
+var user=function(dtluser){
+    this.userName=dtluser.querySelector('input[name="Name"]').value ;
+    this,age=dtluser.querySelector('input[name="Age"]').value ;
+    this.weight=dtluser.querySelector('input[name="weight"]').value ;
+    this.height=dtluser.querySelector('input[name="height"]').value ;
+    this.BMI=dtluser.querySelector('output[name="BMI"]').value ;
+    this.calories=dtluser.querySelector('output[name="cal"]').value;
+    this.protein=dtluser.querySelector('output[name="protn"]').value;
+    this.carbohydrate=dtluser.querySelector('output[name="carbs"]').value;
+    this.fats=dtluser.querySelector('output[name="fats"]').value;
+    this.water=dtluser.querySelector('output[name="h2o"]').value;
+    this.type="user";
+};
 
-
-const lsUser=document.forms["login"];
-function listUser(dtl){
-      for(i=0;dtl[i].name!="";++i){
-        if(i==0){
-          var opt=document.createElement("option");
-          opt.value=dtl[i].value;
-          opt.innerHTML=dtl[i].value;
-          lsUser.querySelector('select[name="userName"]').appendChild(opt);  
-
-        }else{
-      var inpt=document.createElement("output");
-      inpt.name=dtl[i].name;
-      inpt.value=dtl[i].value;
-      inpt.style.display="none";    
-
-      inpt.className=dtl[0].value;
-      lsUser.appendChild(inpt);
-      }
-    
-}};
-
-
-
-// add food item----
-const adfod=document.forms["add food"];
-
-adfod.addEventListener("submit",function(e){
+addUser.addEventListener("submit",function(e){
     e.preventDefault();
-     var fod=adfod.querySelectorAll('input');
-     adintake(fod);
+    var N=addUser.querySelector('input[name="Name"]').value ;
+    var local= new user(addUser);
+    let str =JSON.stringify(local);
+    localStorage.setItem(N,str);
+    
 });
 
-//passing value to intake section---
 
-const inTake=document.forms["intake"];
-function adintake(inpt){
 
-    for(j=0;inpt[j].name!="";++j)
+//adding food items====================================================================
+
+var food=function(dtlfood){
+    this.itemName=dtlfood.querySelector('input[name="Item name"]').value ;
+    this.calories=dtlfood.querySelector('input[name="Item cal"]').value;
+    this.protein=dtlfood.querySelector('input[name="Item protn"]').value;
+    this.carbohydrate=dtlfood.querySelector('input[name="Item carbs"]').value;
+    this.fats=dtlfood.querySelector('input[name="Item fats"]').value;
+    this.water=dtlfood.querySelector('input[name="Item h2o"]').value;
+    this.type="food";
+};
+
+var displayitem=document.querySelector('div[id="3"]');
+
+addFood.addEventListener("submit",function(e){
+    e.preventDefault();
+    var N=addFood.querySelector('input[name="Item name"]').value ;
+
+    var local= new food(addFood);
+    let str =JSON.stringify(local);
+    localStorage.setItem(N,str);
+
+});
+
+//showing possible intakes=========================================================================
+
+document.querySelector('button[id="show"]').addEventListener("click",function(e){
+    e.preventDefault();
+    for(i=0;i<localStorage.length;++i)
     {
-        var dt=document.createElement("output");
-        dt.value=inpt[j].value;
-        dt.className="calc";
-        dt.name=inpt[j].name;
-        var nm=document.createElement("label")
-        nm.innerHTML=inpt[j].name+":";    
-        var brk=document.createElement("br");
-         inTake.insertBefore(nm,inTake.querySelector('input[type="submit"]'));
-         inTake.insertBefore(dt,inTake.querySelector('input[type="submit"]'));
-         inTake.insertBefore(brk,intake.querySelector('input[type="submit"]'));
+        var key=localStorage.key(i);
+        var get=localStorage.getItem(key);
+
+        var local=JSON.parse(get);
+     
+    
+//for avoiding empty elements to count--(can be change after validictionof input)---  
+        if(local.itemName==="")continue;     
+ //checking for type to get similar type of items--       
+        if(local.type==="food"){
+            
+            showItems(local);
+        }
     }
 
+});
+
+
+
+function showItems(src){
+    var brk1=document.createElement("br");
+    inTake.insertBefore(brk1,intake.querySelector('input[type="submit"]'))
+
+//name--------------------------------------------------------------------
+        var lbl=document.createElement("label")
+        lbl.innerHTML="Item Name:";
+        inTake.appendChild(lbl);
+            var name=document.createElement("output");
+            name.value=src.itemName;
+            inTake.appendChild(name);
+
+//calories----------------------------------------------------------------
+        var lbl=document.createElement("label")
+        lbl.innerHTML="calories:";
+        inTake.appendChild(lbl);    
+            var name=document.createElement("output");
+            name.value=src.calories;
+            name.name="Item cal";
+            inTake.appendChild(name);
+          
+//protein-------------------------------------------------------------------
+        var lbl=document.createElement("label")
+        lbl.innerHTML="protein:";
+        inTake.appendChild(lbl);;    
+            var name=document.createElement("output");
+            name.value=src.protein;
+            name.name="Item protn";
+            inTake.appendChild(name);
+         
+//cabohydrates--------------------------------------------------------------
+        var lbl=document.createElement("label")
+        lbl.innerHTML="carbohydrate:";
+        inTake.appendChild(lbl);   
+            var name=document.createElement("output");
+            name.value=src.carbohydrate;
+            name.name="Item carbs";
+            inTake.appendChild(name);
+     
+//fats-----------------------------------------------------------------------
+        var lbl=document.createElement("label")
+        lbl.innerHTML="fats:";
+        inTake.appendChild(lbl);   
+            var name=document.createElement("output");
+            name.value=src.fats;
+            name.name="Item fats";
+            inTake.appendChild(name);
+            
+//water-------------------------------------------------------------------------
+        var lbl=document.createElement("label")
+        lbl.innerHTML="water:";
+        inTake.appendChild(lbl);  
+            var name=document.createElement("output");
+            name.value=src.water;
+            name.name="Item h2o";
+            inTake.appendChild(name);
+          
     var labl=document.createElement("label");
     labl.innerHTML="Quantity Taken:";
-    inTake.insertBefore(labl,intake.querySelector('input[type="submit"]'));
-
+    inTake.appendChild(labl);
 
     var qyt=document.createElement("input");
     qyt.type="number";
     qyt.name="qyt";
     qyt.style.width="50px";
     qyt.min=0;
-    inTake.insertBefore(qyt,intake.querySelector('input[type="submit"]'));
+    inTake.appendChild(qyt);
     
-
     var brk1=document.createElement("br");
-    inTake.insertBefore(brk1,inTake.querySelector('input[type="submit"]'));
-};
+    inTake.appendChild(brk1);
+}
+//clearing items entries=================================================================
 
-//calculating stats---
- inTake.addEventListener("submit",function(e){
+document.querySelector('button[id="clear"]').addEventListener("click",function(e){
+           e.preventDefault();
+           inTake.innerHTML="";
+        
+});
+//calculating stats======================================================================
+
+document.querySelector('button[id="Daily stats"]').addEventListener("click",function(e){
     e.preventDefault();
-    console.log("hai im working");
-      totalCal();
-      console.log("hai im working");
-    //totalProtn();
-    //totalCarbs();
-    //totalFats();
-    //totalh2o();
+    totalCal();
+    totalProtn();
+    totalCarbs();
+    totalFats();
+    totalh2o();
+
  });
 
- const stt=document.forms["stats"];
+//final calories=============================================================================
  function totalCal(){
-       var ttlcal=inTake.querySelectorAll('output[name="calories"]');
+       var ttlcal=inTake.querySelectorAll('output[name="Item cal"]');
        var qyt=inTake.querySelectorAll('input[name="qyt"]');
-       var total;
-       console.log(ttlcal[0].value);
-       console.log(qyt[0].value);
-       for(k=0;ttlcal[k].value!="";++k)
+       var total=0;
+       
+       for(k=0;k<ttlcal.length;++k)
        {
-        console.log(ttlcal[0].value);
-        console.log(qyt[0].value);
-        total+=(ttlcal[k].value*qyt[k].value);
+       
+        total=total+((ttlcal[k].value*qyt[k].value));;
        }
      var pass=document.createElement("output");
+     pass.name="final calories";
      var pnm=document.createElement("label");
      pnm.innerHTML="calories:"
-     pass.value=total;
+     pass.value=total.toFixed(2);
      stt.appendChild(pnm);
      stt.appendChild(pass);
     
  };
- /*
- function totalProtn()
- function totalCarbs()
- function totalFats()
- function totalh2o()
- */
+ 
+//final protein================================================================================
+
+ function totalProtn(){
+    var ttlcal=inTake.querySelectorAll('output[name="Item protn"]');
+    var qyt=inTake.querySelectorAll('input[name="qyt"]');
+    var total=0;
+    
+    for(k=0;k<ttlcal.length;++k)
+    {
+    
+     total=total+((ttlcal[k].value*qyt[k].value)/100);;
+    }
+  var pass=document.createElement("output");
+  pass.name="final protein";
+  var pnm=document.createElement("label");
+  pnm.innerHTML="proteins:"
+  pass.value=total.toFixed(2);
+  stt.appendChild(pnm);
+  stt.appendChild(pass);
+
+ }
+
+ //final carbohydrates=========================================================================
+
+ function totalCarbs(){
+    var ttlcal=inTake.querySelectorAll('output[name="Item carbs"]');
+    var qyt=inTake.querySelectorAll('input[name="qyt"]');
+    var total=0;
+    
+    for(k=0;k<ttlcal.length;++k)
+    {
+    
+     total=total+((ttlcal[k].value*qyt[k].value)/100);;
+    }
+  var pass=document.createElement("output");
+  pass.name="final carbohydrate";
+  var pnm=document.createElement("label");
+  pnm.innerHTML="Carbohydrates:"
+  pass.value=total.toFixed(2);
+  stt.appendChild(pnm);
+  stt.appendChild(pass);
+
+ }
+//final fats=====================================================================================
+ function totalFats(){
+    var ttlcal=inTake.querySelectorAll('output[name="Item fats"]');
+    var qyt=inTake.querySelectorAll('input[name="qyt"]');
+    var total=0;
+    
+    for(k=0;k<ttlcal.length;++k)
+    {
+     total=total+((ttlcal[k].value*qyt[k].value)/100);;
+    }
+  var pass=document.createElement("output");
+  pass.name="final fats";
+  var pnm=document.createElement("label");
+  pnm.innerHTML="fats:"
+  pass.value=total.toFixed(2);
+  stt.appendChild(pnm);
+  stt.appendChild(pass);
+ }
+
+//final water=====================================================================================
+ 
+function totalh2o(){
+    var ttlcal=inTake.querySelectorAll('output[name="Item h2o"]');
+    var qyt=inTake.querySelectorAll('input[name="qyt"]');
+    var total=0;
+    
+    for(k=0;k<ttlcal.length;++k)
+    {
+    
+     total=total+((ttlcal[k].value*qyt[k].value)/100);
+    }
+
+  var pass=document.createElement("output");
+  pass.name="final water";
+  var pnm=document.createElement("label");
+  pnm.innerHTML="water:"
+  pass.value=total.toFixed(2);
+  stt.appendChild(pnm);
+  stt.appendChild(pass);
+ }
+
+//comparing stats=====================================================================================
+
+const remarks=document.forms["compare"];
+
+remarks.addEventListener("submit",function(e){
+    e.preventDefault();
+    var cname=remarks.querySelector('input[name="compareUser"]');
+    console.log(cname);
+    var d=0,j;
+    for(i=0;i<localStorage.length;++i)
+    {
+        var key=localStorage.key(i);
+        var get=localStorage.getItem(key);
+
+        var local=JSON.parse(get);
+            
+        if(cname.value===local.userName){
+            d=1;
+            j=i;
+         }
+    }
+    if(d){
+        
+        var key=localStorage.key(j);
+        var get=localStorage.getItem(key);
+
+        var local=JSON.parse(get);
+        console.log(local);
+        compare(local);
+    }
+    if(!d){
+        alert("enter valid user");
+        }
+
+});
+
+//putting remarks==============================================================================
+
+
+function compare(fdtl){ 
+     var fcal=stt.querySelector('output[name="final calories"]');
+     var fwater=stt.querySelector('output[name="final water"]');
+
+       if(fcal.value>fdtl.calories)
+       {
+           console.log(fcal);
+           var remark=document.createElement("span");
+           remark.innerHTML="calories limit exceeded!!!";
+           remarks.appendChild(remark);
+           
+
+       }
+       if(fwater.value>fdtl.water)
+       {
+        console.log(fwater);
+           var remark=document.createElement("span");
+           remark.innerHTML="Not drinking enough water....why??";
+           remarks.appendChild(remark);
+           
+       }
+       if(fwater.value<fdtl.water&&fcal.value<fdtl.calories)
+       {
+        var remark=document.createElement("span");
+        remark.innerHTML="Goood JOB!!!!";
+        remarks.appendChild(remark);
+       }
+
+}
+ 
