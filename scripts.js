@@ -1,6 +1,6 @@
 //getting all the forms=================================================================
-const addUser=document.forms["add user"];
-const addFood=document.forms["add food"]
+const addUser=document.forms["adduser"];
+const addFood=document.forms["addfood"]
 const inTake=document.forms["intake"];
 const stt=document.forms["stats"];
 
@@ -58,7 +58,7 @@ addUser.querySelector('output[name="h2o"]').value=2;
 
 var user=function(dtluser){
     this.userName=dtluser.querySelector('input[name="Name"]').value ;
-    this,age=dtluser.querySelector('input[name="Age"]').value ;
+    this.age=dtluser.querySelector('input[name="Age"]').value ;
     this.weight=dtluser.querySelector('input[name="weight"]').value ;
     this.height=dtluser.querySelector('input[name="height"]').value ;
     this.BMI=dtluser.querySelector('output[name="BMI"]').value ;
@@ -201,6 +201,8 @@ function showItems(src){
     var brk1=document.createElement("br");
     inTake.appendChild(brk1);
 }
+
+
 //clearing items entries=================================================================
 
 document.querySelector('button[id="clear"]').addEventListener("click",function(e){
@@ -235,7 +237,7 @@ document.querySelector('button[id="Daily stats"]').addEventListener("click",func
      pass.name="final calories";
      var pnm=document.createElement("label");
      pnm.innerHTML="calories:"
-     pass.value=total.toFixed(2);
+     pass.value=total;
      stt.appendChild(pnm);
      stt.appendChild(pass);
     
@@ -320,77 +322,66 @@ function totalh2o(){
   pass.name="final water";
   var pnm=document.createElement("label");
   pnm.innerHTML="water:"
-  pass.value=total.toFixed(2);
+  pass.value=total;
   stt.appendChild(pnm);
   stt.appendChild(pass);
  }
+// clearing stats=====================================================================================
+
+
+document.querySelector('button[id="clearstats"]').addEventListener("click",function(e){
+    e.preventDefault();
+    stt.innerHTML="";
+ 
+});
 
 //comparing stats=====================================================================================
 
-const remarks=document.forms["compare"];
+const remarks=document.querySelector('div[id="rmk"]');  
+const cuser=document.forms["compare"];  
 
-remarks.addEventListener("submit",function(e){
+cuser.addEventListener("submit",function(e){
     e.preventDefault();
-    var cname=remarks.querySelector('input[name="compareUser"]');
-    console.log(cname);
-    var d=0,j;
-    for(i=0;i<localStorage.length;++i)
-    {
-        var key=localStorage.key(i);
-        var get=localStorage.getItem(key);
-
-        var local=JSON.parse(get);
-            
-        if(cname.value===local.userName){
-            d=1;
-            j=i;
-         }
-    }
-    if(d){
-        
-        var key=localStorage.key(j);
-        var get=localStorage.getItem(key);
-
-        var local=JSON.parse(get);
-        console.log(local);
-        compare(local);
-    }
-    if(!d){
+    var cname=cuser.querySelector('input[name="compareUser"]').value;
+    if(cname==""){
+            alert("Enter User name...")
+    }else{
+    var get=localStorage.getItem(cname);
+    var local=JSON.parse(get);
+    
+      if(local==null){
         alert("enter valid user");
+        
+    }else{
+        
+        let final=stt.querySelector('output[name="final water"]');
+        if(final!=null){
+        
+        let ucal=local.calories; 
+        let uwater=local.calories; 
+        let fcal=stt.querySelector('output[name="final calories"]');
+        let fwater=stt.querySelector('output[name="final water"]');
+     
+        if(ucal<fcal){
+            var rmk=document.createElement("span");
+        rmk.innerText="calories limit exceeded!!!";
+        remarks.appendChild(rmk);
         }
-
+     if(uwater>fwater){
+        var rmk=document.createElement("span");
+        rmk.innerText="not drinking enough water why---????";
+        remarks.appendChild(rmk);
+     }
+     if(uwater<fwater&&ucal>fcal){
+        var rmk=document.createElement("span");
+        rmk.innerText="!!!GOOD JOB!!!";
+        remarks.appendChild(rmk);
+     }
+     
+    }else{
+        alert("calculate stats First....");}
+    
+    }
+}
 });
 
-//putting remarks==============================================================================
-
-
-function compare(fdtl){ 
-     var fcal=stt.querySelector('output[name="final calories"]');
-     var fwater=stt.querySelector('output[name="final water"]');
-
-       if(fcal.value>fdtl.calories)
-       {
-           console.log(fcal);
-           var remark=document.createElement("span");
-           remark.innerHTML="calories limit exceeded!!!";
-           remarks.appendChild(remark);
-           
-
-       }
-       if(fwater.value>fdtl.water)
-       {
-        console.log(fwater);
-           var remark=document.createElement("span");
-           remark.innerHTML="Not drinking enough water....why??";
-           remarks.appendChild(remark);
-           
-       }
-       if(fwater.value<fdtl.water&&fcal.value<fdtl.calories)
-       {
-        var remark=document.createElement("span");
-        remark.innerHTML="Goood JOB!!!!";
-        remarks.appendChild(remark);
-       }
-
-}
- 

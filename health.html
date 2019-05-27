@@ -2,15 +2,17 @@
 <html>
 <title>Health Mate</title>
     <head>
-      <link href="" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Amatic+SC|Dancing+Script|Exo+2|Macondo+Swash+Caps|Stylish&display=swap" rel="stylesheet">   
+        
+      <link href="style.css" rel="stylesheet">
     </head>
-    <body>
+    <body background="i1.jpeg">
         <h1>Health Mate</h1>
 
-        <div id="1">
+        <h2>Add user</h2>
+        <div class="eql">
 
-                <h2>Add user</h2>
-                 <form id="add user">
+                 <form id="adduser">
                      Name: <input type="text" name="Name">
                      Age: <input type="number" name="Age" min="10" max="110" style="width: 60px">
                      weight: <input type="number" name="weight" style="width: 60px">
@@ -37,12 +39,14 @@
                      <input type="submit" value="Sign Up">
                  </form>
             </div>
-                    <div id="2">  
-                        <h2> Add food item-</h2>              
-                       <form id="add food">
+
+            <h2> Add food item-</h2>  
+                    <div class="eql">  
+                                    
+                       <form id="addfood">
                                 
                                 Item Name: <input type="text" name="Item name">
-                                calories: <input type="number" name="Item cal">
+                                calories(per gm): <input type="number" name="Item cal">
                                 <br>
                                 Food features:
                                 <br>
@@ -62,29 +66,42 @@
                
                     </div>
                   
-                    <div id="3">
-                        <h2>daily intakes</h2>
-                        <button id="show">new</button>  
+                    <h2>daily intakes</h2>
+
+                    <div class="eql">
+                        
+                        <button id="show">Availible choice</button>  
                         <button id="clear">clear</button>  
+                        <br>
                         <form id="intake">
 
                         </form>
+                        <br>
                         <button id="Daily stats"> Daily stats</button>
                     
                     </div>
-                    <div id="4">
-                        <h2>Stats</h2>
+
+                    <h2>Stats</h2>
+
+                    <div class="eql">
                         <form id="stats">
-                           
-                          </form>
-                   <br>
-                <div id="5">
+                        </form>
+                    </div>
+                <div class="eql">
                    <form id="compare">
+
+                        <button id="clearstats">clear Stats </button>  
+                    <br>
+                       <label>Enter user Name to compare-</label>
                         <input type="text" name="compareUser">
                          <input type="submit" id="compare">
-                         <h2>Remarks-</h2>
+                     </form>
                 </div>
+                <br>
+                <h2>Remarks-</h2>
+                <div id="rmk" style="height:100px">
 
+                </div>
                 
                    
            
