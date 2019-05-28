@@ -52,6 +52,13 @@ body{
     padding: 20px;
     margin:10px auto;
  }
+
+ #nameFood{
+    background-color: aliceblue;
+    padding: 20px;
+    border-left:  10px groove rgb(216, 116, 255);
+    min-height: 100px;
+ }
   output {
       display: inline-block;
       margin: 0px 10px 0px 0px;
@@ -59,4 +66,8 @@ body{
 label{
     color: #1a2399;
     font-weight: bolder;
+}
+
+ul{
+    color: #1a2399;
 }

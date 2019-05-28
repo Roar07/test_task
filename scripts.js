@@ -3,6 +3,8 @@ const addUser=document.forms["adduser"];
 const addFood=document.forms["addfood"]
 const inTake=document.forms["intake"];
 const stt=document.forms["stats"];
+var nameFood=document.querySelector('div[id="nameFood"]').querySelector('ul');
+
 
 //auto calculating requirements==========================================================
 var ht=addUser.querySelector('input[name="height"]');
@@ -104,12 +106,8 @@ addFood.addEventListener("submit",function(e){
     let str =JSON.stringify(local);
     localStorage.setItem(N,str);
 
-});
 
-//showing possible intakes=========================================================================
-
-addFood.addEventListener("submit",function(e){
-    e.preventDefault();
+    nameFood.innerHTML="";
     for(i=0;i<localStorage.length;++i)
     {
         var key=localStorage.key(i);
@@ -119,15 +117,42 @@ addFood.addEventListener("submit",function(e){
      
     
 //for avoiding empty elements to count--(can be change after validictionof input)---  
-        if(local.itemName==="")continue;     
+        if(local.itemName=="")continue;     
  //checking for type to get similar type of items--       
         if(local.type==="food"){
             
-            showItems(local);
+            showItemsName(local);
         }
     }
 
+
 });
+
+//showing pre added food items====================================================================
+
+window.onload=function(){
+
+    for(i=0;i<localStorage.length;++i)
+    {
+        var key=localStorage.key(i);
+        var get=localStorage.getItem(key);
+
+        var local=JSON.parse(get);
+     
+    
+//for avoiding empty elements to count--(can be change after validictionof input)---  
+        if(local.itemName=="")continue;     
+ //checking for type to get similar type of items--       
+        if(local.type==="food"){
+            
+            showItemsName(local);
+        }
+    }
+}
+
+//showing possible intakes=========================================================================
+
+
 
 document.querySelector('button[id="pinTake"]').addEventListener("click",function(e){
     e.preventDefault();
@@ -149,6 +174,19 @@ document.querySelector('button[id="pinTake"]').addEventListener("click",function
     }
 
 });
+
+//only name=======================
+function showItemsName(src){
+//name--------------------------------------------------------------------
+       
+            var name=document.createElement("li");
+            name.innerHTML=src.itemName;
+            nameFood.appendChild(name);
+
+}
+
+
+
 
 function showItems(src){
     var brk1=document.createElement("br");
