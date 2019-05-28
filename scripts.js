@@ -76,6 +76,7 @@ addUser.addEventListener("submit",function(e){
     var local= new user(addUser);
     let str =JSON.stringify(local);
     localStorage.setItem(N,str);
+    alert(addUser.querySelector('input[name="Name"]').value+"-a new user added");
     
 });
 
@@ -107,7 +108,7 @@ addFood.addEventListener("submit",function(e){
 
 //showing possible intakes=========================================================================
 
-document.querySelector('button[id="show"]').addEventListener("click",function(e){
+addFood.addEventListener("submit",function(e){
     e.preventDefault();
     for(i=0;i<localStorage.length;++i)
     {
@@ -128,7 +129,26 @@ document.querySelector('button[id="show"]').addEventListener("click",function(e)
 
 });
 
+document.querySelector('button[id="pinTake"]').addEventListener("click",function(e){
+    e.preventDefault();
+    for(i=0;i<localStorage.length;++i)
+    {
+        var key=localStorage.key(i);
+        var get=localStorage.getItem(key);
 
+        var local=JSON.parse(get);
+     
+    
+//for avoiding empty elements to count--(can be change after validictionof input)---  
+        if(local.itemName==="")continue;     
+ //checking for type to get similar type of items--       
+        if(local.type==="food"){
+            
+            showItems(local);
+        }
+    }
+
+});
 
 function showItems(src){
     var brk1=document.createElement("br");
